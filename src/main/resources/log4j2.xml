@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Properties>
+        <Property name="socket.host">localhost</Property>
+        <Property name="socket.port">9999</Property>
+        <Property name="console.thresholdFilter">INFO</Property>
+        <Property name="socket.thresholdFilter">DEBUG</Property>
+    </Properties>
+    <Appenders>
+        <Console name="CONSOLE" target="SYSTEM_OUT">
+            <ThresholdFilter level="${console.thresholdFilter}"/>
+            <PatternLayout pattern="%d %-5p [%t] %c{10} - %m%n"/>
+        </Console>
+        <Socket name="SOCKET" host="${socket.host}" port="${socket.port}" immediateFlush="true">
+            <ThresholdFilter level="${socket.thresholdFilter}"/>
+            <JSONLayout eventEol="true" compact="true"/>
+        </Socket>
+        <Async name="ASYNC">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="SOCKET"/>
+        </Async>
+    </Appenders>
+
+    <Loggers>
+        <Logger name="ru.example" level="debug" additivity="false">
+            <AppenderRef ref="ASYNC"/>
+        </Logger>
+        <Root level="warm">
+            <AppenderRef ref="ASYNC"/>
+        </Root>
+    </Loggers>
+</Configuration>

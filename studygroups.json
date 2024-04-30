@@ -1,0 +1,71 @@
+[
+  {
+    "id": 3,
+    "name": "Группа3",
+    "coordinates": {
+      "x": 3,
+      "y": 3
+    },
+    "creationDate": "5::Mar::2024 20::31::34",
+    "studentsCount": 33,
+    "expelledStudents": 3,
+    "shouldBeExpelled": 3,
+    "formOfEducation": "DISTANCE_EDUCATION",
+    "groupAdmin": {
+      "name": "Админов",
+      "passportID": "333",
+      "hairColor": "BLACK",
+      "location": {
+        "x": 3,
+        "y": 3,
+        "name": "Место3"
+      }
+    }
+  },
+  {
+    "id": 1,
+    "name": "Gr 111",
+    "coordinates": {
+      "x": 1,
+      "y": 1
+    },
+    "creationDate": "5::Mar::2024 13::21::20",
+    "studentsCount": 111,
+    "expelledStudents": 1,
+    "shouldBeExpelled": 1,
+    "formOfEducation": "DISTANCE_EDUCATION",
+    "groupAdmin": {
+      "name": "ADMIN1",
+      "passportID": "1111111",
+      "hairColor": "BLACK",
+      "location": {
+        "x": 1,
+        "y": 1,
+        "name": "Plase1"
+      }
+    }
+  },
+  {
+    "id": 2,
+    "name": "Группа 2",
+    "coordinates": {
+      "x": 2,
+      "y": 2
+    },
+    "creationDate": "5::Mar::2024 19::59::30",
+    "studentsCount": 22,
+    "expelledStudents": 2,
+    "shouldBeExpelled": 2,
+    "formOfEducation": "FULL_TIME_EDUCATION",
+    "groupAdmin": {
+      "name": "Админов2",
+      "passportID": "222222",
+      "hairColor": "BLACK",
+      "location": {
+        "x": 2,
+        "y": 2,
+        "name": "Место2"
+      }
+    }
+  }
+]
