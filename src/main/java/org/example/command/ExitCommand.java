@@ -26,4 +26,8 @@ public class ExitCommand extends Command {
         return  respArr;
     }
 
+    @Override
+    public void execute(String[] args) throws InvalidArgsException {
+
+    }
 }
