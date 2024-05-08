@@ -15,19 +15,23 @@ public   class ByteActions {
                 }
             }
         }
+        String resp="";
         byte[] allResp = new byte[len];
         ByteBuffer buff = ByteBuffer.wrap(allResp);
         for (int i=0;i< response.length;i++){
             if (response[i].getBytes().length!=0){
-                if (len == 0) {
+                if (i == 0) {
                     buff.put(response[i].getBytes());
+                    resp=response[i];
                 }
                  else {
                     buff.put(("\n"+response[i]).getBytes());
+                    resp += "\n"+response[i];
 
                 }
             }
         }
+        System.out.println("Ответ: "+resp);
         return buff;
     }
 

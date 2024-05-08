@@ -12,14 +12,14 @@ public class Response implements Serializable {
     private int rcount;
     private int rnumber;
 
-    public Response() {
+    /*public Response() {
         this.message = null;
         this.rcount=0;
         this.rnumber=0;
     }
-
+*/
     public Response(byte[] message, int rcount, int rnumber) {
-        String all_message = "";
+  //      String all_message = "";
         this.message = message;
         this.rcount = rcount;
         this.rnumber = rnumber;
@@ -37,10 +37,18 @@ public class Response implements Serializable {
         return this.rnumber;
     }
 
+    public void setRcount(int rcount) {
+        this.rcount = rcount;
+    }
+
+    public void setRnumber(int rnumber) {
+        this.rnumber = rnumber;
+    }
+
     public static Response[] createResponses(String[] response){
 
         ByteBuffer resp= ByteActions.joinStrings(response);
-        ByteBuffer[] resps = ByteActions.split(resp,400);
+        ByteBuffer[] resps = ByteActions.split(resp,394);
         Response[] respArr= new Response[resps.length];
         for (int i=0;i<resps.length;i++)
         {

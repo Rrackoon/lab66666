@@ -18,18 +18,25 @@ public class SaveCommand extends Command {
 
 
     @Override
-    public  Response[] execute(String[] args, Integer stacksize, StudyGroup studyGroup, CommandManager commandmanager, CollectionManager collection)  {
-        ByteBuffer respBuff = ByteBuffer.wrap("".getBytes());
-        String[] response = collection.getCollection().stream().map(dr -> dr.toString()).toArray(String[]::new);
-
+    public  Response[] execute(String args, String studyGroup, CommandManager commandmanager, CollectionManager collection)  {
+        String[] response = new String[1];
+        try{
+            collection.save();
+            response[0] = "Коллекция сохранена в файл";
+        }
+        catch (Exception e){
+            response[0] = "Ошибка при сохранении коллекции";
+        }
         Response[] respArr= Response.createResponses(response);
 
         return  respArr;
     }
 
     @Override
-    public void execute(String[] args) throws InvalidArgsException {
+    public void execute(String args) throws InvalidArgsException {
 
     }
+
+
 
 }

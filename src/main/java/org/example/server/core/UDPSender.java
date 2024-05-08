@@ -21,7 +21,7 @@ public class UDPSender {
 
     private static final Logger logger = LogManager.getLogger(UDPSender.class);
     private final DatagramChannel datagramChannel;
-    private final Selector selector;
+    private Selector selector;
 
     public UDPSender(DatagramChannel datagramChannel,Selector selector) throws IOException {
         this.datagramChannel = datagramChannel;
@@ -36,18 +36,20 @@ public class UDPSender {
 
         for (int i = 0; i < response.length; i++) {
             try {
+                System.out.println("Передача "+(i+1)+ " части ответа");
 
-
-                for (int j = 0; j < response[i].getMessage().length; j++) {
-                    logger.debug("response: {}", response[i].getMessage()[i]);
-                }
+                //for (int j = 0; j < response[i].getMessage().length; j++) {
+                    logger.debug("response: {} chunk :", response[i].getRcount() );
+                //}
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();//для записи объекта в массив байтов
                 ObjectOutputStream oos = new ObjectOutputStream(baos);
-                oos.writeObject(response);
+                oos.writeObject(response[i]);
                 byte[] arr = baos.toByteArray();
                 ByteBuffer buffer = ByteBuffer.wrap(arr);//обертка массива байтов
 
+
                 // Ожидаем готовности канала на запись
+                datagramChannel.register(selector, SelectionKey.OP_WRITE);
                 selector.select();//блокирует текущий поток до тех пор, пока не будет готов как минимум один канал из зарегистрированных в селекторе. В данном случае мы ждем готовности канала на запись.
                 Set<SelectionKey> selectedKeys = selector.selectedKeys();
                 Iterator<SelectionKey> keyIterator = selectedKeys.iterator();
@@ -58,6 +60,7 @@ public class UDPSender {
                         //DatagramChannel
                         channel = (DatagramChannel) key.channel();
                         channel.send(buffer, address);
+                        System.out.println("Отпраавлено "+arr.length+" bytes");
                         logger.debug("Sent " + arr.length + " bytes");
                     }
                     keyIterator.remove();

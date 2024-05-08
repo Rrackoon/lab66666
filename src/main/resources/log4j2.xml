@@ -25,7 +25,7 @@
         <Logger name="ru.example" level="debug" additivity="false">
             <AppenderRef ref="ASYNC"/>
         </Logger>
-        <Root level="warm">
+        <Root level="error">
             <AppenderRef ref="ASYNC"/>
         </Root>
     </Loggers>

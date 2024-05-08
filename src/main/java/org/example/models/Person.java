@@ -34,6 +34,11 @@ public class Person implements Serializable, Comparable<Person> {
     public String getName(){
         return name;
     }
+
+    public String getPassportID() {
+        return passportID;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(this.name, this.passportID, this.hairColor, this.location);

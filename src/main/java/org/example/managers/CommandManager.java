@@ -15,9 +15,18 @@ import org.example.utils.IOProvider;
 import org.example.command.*;
 public class CommandManager {
 
-    private final Map<String, Command> commands = new HashMap<>();
+    private static final Map<String, Command> commands = new HashMap<>();
+    private IOProvider provider;
+    public CommandManager(IOProvider provider) {
+        this.provider=provider;
+    }
 
-    public CommandManager() {}
+    public IOProvider getProvider() {
+        return provider;
+    }
+
+    public CommandManager() {
+    }
     /*
     public CommandManager(CollectionManager collection, IOProvider provider, int recDepth) {
         register("info", new InfoCommand(provider, collection));
@@ -64,7 +73,7 @@ public class CommandManager {
         commands.put(commandName, command);
     }
 
-    public boolean execute(String commandName, String[] args) throws InvalidArgsException {
+    public boolean execute(String commandName, String args) throws InvalidArgsException {
         if (commands.containsKey(commandName)) {
             commands.get(commandName).execute(args);
             return true;

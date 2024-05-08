@@ -34,7 +34,7 @@ public class UDPReader {
     SocketAddress client;
     Selector selector;
     CommandShallow shallow ;
-    Scanner scanner;
+    //Scanner scanner;
 
     public UDPReader(DatagramChannel channel, Selector selector) throws Exception {
 
@@ -42,7 +42,7 @@ public class UDPReader {
         in_buffer = ByteBuffer.allocateDirect(1024);
         this.channel=channel;
         this.selector=selector;
-        this.scanner = new Scanner(System.in);
+        //this.scanner = new Scanner(System.in);
 
     }
 
@@ -53,7 +53,7 @@ public class UDPReader {
     public SocketAddress getClient()
     {return this.client;}
     public void execute() throws IOException {
-         Selector selector = Selector.open();
+        //selector = Selector.open();
         channel.register(selector, SelectionKey.OP_READ);
         if (true) {
 
@@ -65,9 +65,10 @@ public class UDPReader {
                     while (iterator.hasNext()) {
 
                         SelectionKey key = iterator.next();
-                        iterator.remove();
+
                         if (key.isReadable()) {
                             client = receive();
+                            iterator.remove();
                         }
                     }
                 }
@@ -93,7 +94,8 @@ public class UDPReader {
             ByteArrayInputStream bis = new ByteArrayInputStream(data);
             ObjectInput in = new ObjectInputStream(bis);
             shallow = (CommandShallow)in.readObject();
-            logger.info("Command received:"+shallow.getCommand().getName());
+            System.out.println("Получена команда:"+ shallow.getCommand());
+            logger.info("Command received: "+shallow.getCommand());
             //logger.info("Command received: {} {}", shallow.getCommand().getName());
             in_buffer.clear();
 

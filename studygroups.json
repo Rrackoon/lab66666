@@ -1,47 +1,231 @@
 [
   {
-    "id": 3,
-    "name": "Группа3",
+    "id": 15,
+    "name": "GROUP20",
     "coordinates": {
-      "x": 3,
-      "y": 3
+      "x": 20,
+      "y": 20
     },
-    "creationDate": "5::Mar::2024 20::31::34",
-    "studentsCount": 33,
-    "expelledStudents": 3,
+    "creationDate": "3::May::2024 22::22::31",
+    "studentsCount": 220,
+    "expelledStudents": 4,
     "shouldBeExpelled": 3,
     "formOfEducation": "DISTANCE_EDUCATION",
     "groupAdmin": {
-      "name": "Админов",
-      "passportID": "333",
-      "hairColor": "BLACK",
+      "name": "Adminoff20",
+      "passportID": "1234567890",
+      "hairColor": "RED",
       "location": {
-        "x": 3,
-        "y": 3,
-        "name": "Место3"
+        "x": 20,
+        "y": 20,
+        "name": "Place20"
       }
     }
   },
   {
-    "id": 1,
-    "name": "Gr 111",
+    "id": 14,
+    "name": "GROUP21",
+    "coordinates": {
+      "x": 21,
+      "y": 21
+    },
+    "creationDate": "3::May::2024 21::40::44",
+    "studentsCount": 211,
+    "expelledStudents": 3,
+    "shouldBeExpelled": 2,
+    "formOfEducation": "DISTANCE_EDUCATION",
+    "groupAdmin": {
+      "name": "Adminov21",
+      "passportID": "123456789",
+      "hairColor": "RED",
+      "location": {
+        "x": 21,
+        "y": 21,
+        "name": "Place20"
+      }
+    }
+  },
+  {
+    "id": 13,
+    "name": "GROUP14",
+    "coordinates": {
+      "x": 14,
+      "y": 14
+    },
+    "creationDate": "3::May::2024 16::55::32",
+    "studentsCount": 140,
+    "expelledStudents": 11,
+    "shouldBeExpelled": 2,
+    "formOfEducation": "DISTANCE_EDUCATION",
+    "groupAdmin": {
+      "name": "Adminov14",
+      "passportID": "123456789",
+      "hairColor": "RED",
+      "location": {
+        "x": 1,
+        "y": 2,
+        "name": "Place14"
+      }
+    }
+  },
+  {
+    "id": 11,
+    "name": "lk;lk;lkk;l",
+    "coordinates": {
+      "x": 4,
+      "y": 4
+    },
+    "creationDate": "2::May::2024 22::18::35",
+    "studentsCount": 44,
+    "expelledStudents": 3,
+    "shouldBeExpelled": 4,
+    "formOfEducation": "DISTANCE_EDUCATION",
+    "groupAdmin": {
+      "name": "kdkdkfkfkf",
+      "passportID": "2334444",
+      "hairColor": "RED",
+      "location": {
+        "x": 3,
+        "y": 4,
+        "name": "ghjggjgjg999"
+      }
+    }
+  },
+  {
+    "id": 10,
+    "name": "kldkldkdk",
+    "coordinates": {
+      "x": 77,
+      "y": 7
+    },
+    "creationDate": "2::May::2024 22::12::58",
+    "studentsCount": 5,
+    "expelledStudents": 67,
+    "shouldBeExpelled": 54,
+    "formOfEducation": "DISTANCE_EDUCATION",
+    "groupAdmin": {
+      "name": "lljlkjlkjjlkj",
+      "passportID": "12838484",
+      "hairColor": "RED",
+      "location": {
+        "x": 88,
+        "y": 88,
+        "name": "lslsls99"
+      }
+    }
+  },
+  {
+    "id": 9,
+    "name": "KKKKKKK",
+    "coordinates": {
+      "x": 777,
+      "y": 55
+    },
+    "creationDate": "2::May::2024 22::08::28",
+    "studentsCount": 44,
+    "expelledStudents": 33,
+    "shouldBeExpelled": 44,
+    "formOfEducation": "FULL_TIME_EDUCATION",
+    "groupAdmin": {
+      "name": "kdkdkdkdkdkd",
+      "passportID": "183839404",
+      "hairColor": "RED",
+      "location": {
+        "x": 34,
+        "y": 34,
+        "name": "LLLL3"
+      }
+    }
+  },
+  {
+    "id": 8,
+    "name": "ddddd",
+    "coordinates": {
+      "x": 2,
+      "y": 2
+    },
+    "creationDate": "2::May::2024 22::05::55",
+    "studentsCount": 2,
+    "expelledStudents": 2,
+    "shouldBeExpelled": 2,
+    "formOfEducation": "DISTANCE_EDUCATION",
+    "groupAdmin": {
+      "name": "ssdff",
+      "passportID": "123456",
+      "hairColor": "RED",
+      "location": {
+        "x": 4,
+        "y": 67,
+        "name": "LLLL456"
+      }
+    }
+  },
+  {
+    "id": 7,
+    "name": "gr9",
+    "coordinates": {
+      "x": 1,
+      "y": 9
+    },
+    "creationDate": "2::May::2024 20::35::13",
+    "studentsCount": 99,
+    "expelledStudents": 4,
+    "shouldBeExpelled": 5,
+    "formOfEducation": "DISTANCE_EDUCATION",
+    "groupAdmin": {
+      "name": "GGGGGGGGGGGGGGGGGGGGGGGG",
+      "passportID": "111111111111111111111111111111",
+      "hairColor": "BLACK",
+      "location": {
+        "x": 333,
+        "y": 333,
+        "name": "LP999999999999999"
+      }
+    }
+  },
+  {
+    "id": 6,
+    "name": "GR8",
     "coordinates": {
       "x": 1,
       "y": 1
     },
-    "creationDate": "5::Mar::2024 13::21::20",
-    "studentsCount": 111,
-    "expelledStudents": 1,
-    "shouldBeExpelled": 1,
+    "creationDate": "2::May::2024 20::24::43",
+    "studentsCount": 88,
+    "expelledStudents": 4,
+    "shouldBeExpelled": 3,
     "formOfEducation": "DISTANCE_EDUCATION",
     "groupAdmin": {
-      "name": "ADMIN1",
-      "passportID": "1111111",
-      "hairColor": "BLACK",
+      "name": "Adnimov8",
+      "passportID": "123888",
+      "hairColor": "RED",
       "location": {
-        "x": 1,
-        "y": 1,
-        "name": "Plase1"
+        "x": 8,
+        "y": 8,
+        "name": "PL8"
+      }
+    }
+  },
+  {
+    "id": 5,
+    "name": "GRP8",
+    "coordinates": {
+      "x": 8,
+      "y": 8
+    },
+    "creationDate": "2::May::2024 17::30::43",
+    "studentsCount": 88,
+    "expelledStudents": 3,
+    "shouldBeExpelled": 2,
+    "formOfEducation": "FULL_TIME_EDUCATION",
+    "groupAdmin": {
+      "name": "ADM_MMM",
+      "passportID": "12345678",
+      "hairColor": "BROWN",
+      "location": {
+        "x": 8,
+        "y": 8,
+        "name": "LOC8"
       }
     }
   },
@@ -65,6 +249,144 @@
         "x": 2,
         "y": 2,
         "name": "Место2"
+      }
+    }
+  },
+  {
+    "id": 3,
+    "name": "Группа3",
+    "coordinates": {
+      "x": 3,
+      "y": 3
+    },
+    "creationDate": "5::Mar::2024 20::31::34",
+    "studentsCount": 33,
+    "expelledStudents": 3,
+    "shouldBeExpelled": 3,
+    "formOfEducation": "DISTANCE_EDUCATION",
+    "groupAdmin": {
+      "name": "Админов",
+      "passportID": "333",
+      "hairColor": "BLACK",
+      "location": {
+        "x": 3,
+        "y": 3,
+        "name": "Место3"
+      }
+    }
+  },
+  {
+    "id": 4,
+    "name": "GRP77",
+    "coordinates": {
+      "x": 7,
+      "y": 7
+    },
+    "creationDate": "1::May::2024 21::46::54",
+    "studentsCount": 77,
+    "expelledStudents": 4,
+    "shouldBeExpelled": 3,
+    "formOfEducation": "DISTANCE_EDUCATION",
+    "groupAdmin": {
+      "name": "AdminovNet",
+      "passportID": "12345657",
+      "hairColor": "RED",
+      "location": {
+        "x": 1,
+        "y": 1,
+        "name": "PLA77"
+      }
+    }
+  },
+  {
+    "id": 12,
+    "name": "GRP10",
+    "coordinates": {
+      "x": 10,
+      "y": 10
+    },
+    "creationDate": "3::May::2024 08::12::55",
+    "studentsCount": 100,
+    "expelledStudents": 1,
+    "shouldBeExpelled": 2,
+    "formOfEducation": "DISTANCE_EDUCATION",
+    "groupAdmin": {
+      "name": "ADMIN10",
+      "passportID": "01010101010",
+      "hairColor": "BLACK",
+      "location": {
+        "x": 10,
+        "y": 10,
+        "name": "PL10"
+      }
+    }
+  },
+  {
+    "id": 16,
+    "name": "GROUP99",
+    "coordinates": {
+      "x": 20,
+      "y": 20
+    },
+    "creationDate": "5::May::2024 08::23::34",
+    "studentsCount": 220,
+    "expelledStudents": 4,
+    "shouldBeExpelled": 3,
+    "formOfEducation": "DISTANCE_EDUCATION",
+    "groupAdmin": {
+      "name": "Adminoff99",
+      "passportID": "99999999",
+      "hairColor": "RED",
+      "location": {
+        "x": 20,
+        "y": 20,
+        "name": "Place99"
+      }
+    }
+  },
+  {
+    "id": 17,
+    "name": "GROUP199",
+    "coordinates": {
+      "x": 20,
+      "y": 20
+    },
+    "creationDate": "5::May::2024 18::15::58",
+    "studentsCount": 220,
+    "expelledStudents": 4,
+    "shouldBeExpelled": 3,
+    "formOfEducation": "DISTANCE_EDUCATION",
+    "groupAdmin": {
+      "name": "Adminoff199",
+      "passportID": "19999991",
+      "hairColor": "RED",
+      "location": {
+        "x": 20,
+        "y": 20,
+        "name": "Place199"
+      }
+    }
+  },
+  {
+    "id": 18,
+    "name": "GROUP199",
+    "coordinates": {
+      "x": 20,
+      "y": 20
+    },
+    "creationDate": "5::May::2024 20::48::52",
+    "studentsCount": 220,
+    "expelledStudents": 4,
+    "shouldBeExpelled": 3,
+    "formOfEducation": "DISTANCE_EDUCATION",
+    "groupAdmin": {
+      "name": "Adminoff199",
+      "passportID": "19999992",
+      "hairColor": "RED",
+      "location": {
+        "x": 20,
+        "y": 20,
+        "name": "Place199"
       }
     }
   }

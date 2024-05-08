@@ -9,7 +9,7 @@ import org.example.server.core.*;
 
 import java.io.IOException;
 import java.util.Scanner;
-import org.apache.logging.log4j.Level;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -46,8 +46,12 @@ public class Main {
         }
 
 
-        String[] comnames = {"help", "info", "show", "add", "update", "remove_by_id", "clear", "save", "execute_script", "exit", "remove_at", "sort", "history", "sum_of_age", "print_field_ascending_character", "print_field_descending_character"};
-        Command[] coms = {new HelpCommand(), new InfoCommand(), new ShowCommand(), new AddCommand(), new RemoveByIdCommand(), new ClearCommand(), new SaveCommand(), new ExecuteScriptCommand(), new ExitCommand(), new RemoveFirstCommand(),new AddIfMinCommand(), new CountLesAdminNameCommand(), new UpdateCommand()};
+        String[] comnames = {"help", "info", "show", "add", "update", "remove_by_id", "clear", "save",
+                "execute_script", "exit", "add_if_min", "count_less_than_group_admin", "update",
+                "print_asceding","remove_first"};
+        Command[] coms = {new HelpCommand(), new InfoCommand(), new ShowCommand(), new AddCommand(), new UpdateCommand(),
+                new RemoveByIdCommand(), new ClearCommand(), new SaveCommand(), new ExecuteScriptCommand(), new ExitCommand(),
+                new AddIfMinCommand(), new CountLesAdminNameCommand(), new UpdateCommand(),new PrintAscedingCommand(), new RemoveFirstCommand()};
         for (int i = 0; i < coms.length; ++i)
         {
             try {
@@ -71,7 +75,7 @@ public class Main {
                                 logger.debug("In read");
                                 finalReader.execute();
                                 //SocketAddress client = reader.receive();
-                                Response[] response = finalReader.getShallow().getCommand().execute(finalReader.getShallow().getArguments(), 0, finalReader.getShallow().getStudyGroup(), commandmanager, collection);
+                                Response[] response = commandmanager.getCommand(finalReader.getShallow().getCommand()).execute(finalReader.getShallow().getArguments(),finalReader.getShallow().getStudyGroup(), commandmanager, collection);
                                 finalSender.send(response, finalReader.getClient(),connector.getChannel(),logger);
                                 logger.debug("End of cycle");
                             }

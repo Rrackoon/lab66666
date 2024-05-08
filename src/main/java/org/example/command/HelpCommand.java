@@ -20,17 +20,18 @@ public class HelpCommand extends Command {
 
 
     @Override
-    public  Response[] execute(String[] args, Integer stacksize, StudyGroup studyGroup, CommandManager commandmanager, CollectionManager collection)  {
-        ByteBuffer respBuff = ByteBuffer.wrap("".getBytes());
-        String[] response = collection.getCollection().stream().map(dr -> dr.toString()).toArray(String[]::new);
-
+    public  Response[] execute(String args,  String studyGroup, CommandManager commandmanager, CollectionManager collection)  {
+     //   ByteBuffer respBuff = ByteBuffer.wrap("".getBytes());
+        String[] response = {commandmanager.getCommands()};
         Response[] respArr= Response.createResponses(response);
 
         return  respArr;
     }
 
     @Override
-    public void execute(String[] args) throws InvalidArgsException {
+    public void execute(String args) throws InvalidArgsException {
 
     }
+
+
 }

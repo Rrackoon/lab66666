@@ -34,7 +34,8 @@ public class DefaultTypeParser implements Parser {
         while (true) {
             try {
                 String line = parseString(name, descr);
-                return (line != null) ? Integer.parseInt(line) : null;
+
+                return Integer.parseInt(line) ;
             } catch (NumberFormatException exception) {
                 printer.printf("Invalid %s.%n", name);
             }
@@ -44,7 +45,7 @@ public class DefaultTypeParser implements Parser {
         while (true) {
             try {
                 String line = parseString(name, descr);
-                return (line != null) ? Integer.parseInt(line) : null;
+                return Integer.parseInt(line) ;
             } catch (NumberFormatException exception) {
                 printer.printf("Invalid %s.%n", name);
             }
@@ -54,7 +55,7 @@ public class DefaultTypeParser implements Parser {
         while (true) {
             try {
                 String line = parseString(name, descr);
-                return (line != null) ? Long.parseLong(line) : null;
+                return Long.parseLong(line);
             } catch (NumberFormatException exception) {
                 printer.printf("Invalid %s.%n", name);
             }
@@ -65,7 +66,7 @@ public class DefaultTypeParser implements Parser {
         while (true) {
             try {
                 String line = parseString(name, descr);
-                return (line != null) ? Float.parseFloat(line) : null;
+                return Float.parseFloat(line);
             } catch (NumberFormatException exception) {
                 printer.printf("Invalid %s.%n", name);
             }
@@ -76,7 +77,7 @@ public class DefaultTypeParser implements Parser {
         while (true) {
             try {
                 String line = parseString(name, descr);
-                return (line != null) ? Double.parseDouble(line) : null;
+                return Double.parseDouble(line);
             } catch (NumberFormatException exception) {
                 printer.printf("Invalid %s.%n", name);
             }

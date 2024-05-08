@@ -25,6 +25,10 @@ public  class CollectionManager {
         return collection;
     }
 
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
     //присваивание max id
     public static CollectionManager fromFile(String fileName) throws FileNotFoundException {
         CollectionManager collection = new CollectionManager(fileName);
@@ -80,6 +84,7 @@ public  class CollectionManager {
         StudyGroup studyGroup = get(id);
         studyGroup.update(newStudyGroup);
     }
+
 
     public void removeById(long id) {
         collection.remove(get(id));

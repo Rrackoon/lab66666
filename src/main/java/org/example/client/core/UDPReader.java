@@ -24,7 +24,7 @@ public class UDPReader {
 
         public Response readResponse() throws IOException, ClassNotFoundException {
             System.out.println("in readResponse");
-            Response resp;
+            Response resp=null;
             byte[] buffer = new byte[65507];
             DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
             datagramSocket.setSoTimeout(3000);
@@ -32,9 +32,18 @@ public class UDPReader {
             byte[] data = packet.getData();
             ByteArrayInputStream bais = new ByteArrayInputStream(data);
             ObjectInputStream ois = new ObjectInputStream(bais);
-
+            System.out.println("Читаем ответ");
+            try{
+             //   Object o = ois.readObject();
+             //   o.getClass().getName();
             resp= (Response) ois.readObject();
+            System.out.println("Почучена "+(resp.getRcount()+1)+" из "+resp.getRnumber()+" частeй");
 
+            } catch (Exception e)
+            {
+                System.out.println("Ответ не Response");
+
+            }
             return resp;
         }
 }

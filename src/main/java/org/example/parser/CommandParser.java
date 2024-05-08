@@ -1,5 +1,7 @@
 package org.example.parser;
 
+import org.example.client.core.Console;
+import org.example.command.CommandShallow;
 import org.example.exception.*;
 import org.example.utils.IOProvider;
 
@@ -16,6 +18,7 @@ public class CommandParser extends DefaultTypeParser {
     private final IOProvider provider;
     private final static int MAX_REC_DEPTH = 5;
     private final int recDepth;
+
 
     public CommandParser(CommandManager commandManager, IOProvider provider, int recDepth) {
         super(provider.getScanner(), provider.getPrinter());
@@ -38,7 +41,14 @@ public class CommandParser extends DefaultTypeParser {
                 String line = scanner.nextLine();
                 String[] splitLine = line.strip().split("\\s+");//разделение на массив строк
                 String commandName = splitLine[0].toLowerCase();//приведение к нижнему регистру
-                String[] args = Arrays.copyOfRange(splitLine, 1, splitLine.length);//получение аргументов команд
+                String args = splitLine.length>1?splitLine[1]:"";//получение аргументов команд
+                CommandShallow shallow = new CommandShallow(commandName,args);
+                try{
+                 Console.execute_command(shallow,provider,commandManager);
+                }
+                catch (Exception e) {
+                        System.out.println("Oшибка выполнения команды скрипта "+e.getMessage());
+                }
                 if (!commandManager.execute(commandName, args)) {
                     printer.print("Invalid command");
                 }

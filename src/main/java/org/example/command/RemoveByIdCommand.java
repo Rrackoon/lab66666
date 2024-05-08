@@ -10,32 +10,42 @@ import java.nio.ByteBuffer;
 
 public class RemoveByIdCommand extends Command {
     public RemoveByIdCommand() {
-        super("remove_by_id {id}", "удалить элемент из коллекции по его id");
+        super("remove_by_id", "удалить элемент из коллекции по его id");
     }
 
 
     @Override
-    public void validateArgs(String[] args, int length) throws InvalidArgsException {
+    public boolean validateArgs(String args, int length)  {
         try {
             super.validateArgs(args, length);
-            long id = Long.parseLong(args[0]);
+            long id = Long.parseLong(args);
         } catch (IndexOutOfBoundsException | NumberFormatException e) {
-            throw new InvalidArgsException();
+            System.out.println("Ошибка формата аргумента");
+            return false;
         }
+        return true;
     }
 
     @Override
-    public  Response[] execute(String[] args, Integer stacksize, StudyGroup studyGroup, CommandManager commandmanager, CollectionManager collection)  {
-        ByteBuffer respBuff = ByteBuffer.wrap("".getBytes());
-        String[] response = collection.getCollection().stream().map(dr -> dr.toString()).toArray(String[]::new);
+    public Response[] execute(String args, String studyGroup, CommandManager commandmanager, CollectionManager collection) {
+        String[] response = new String[1];
 
-        Response[] respArr= Response.createResponses(response);
+        try{
+            collection.removeById(Integer.parseInt(args));
+            response[0] = "Удалена группа: ID"+args  ;
+        } catch(Exception e){
+            response[0] = "Ошибка при удалении группы ID"+args ;
 
-        return  respArr;
+        }
+        Response[] respArr=Response.createResponses(response);
+        return respArr;
+
+
     }
-
     @Override
-    public void execute(String[] args) throws InvalidArgsException {
+    public void execute(String args) throws InvalidArgsException {
 
     }
+
+
 }

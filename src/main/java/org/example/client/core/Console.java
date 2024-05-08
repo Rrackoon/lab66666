@@ -2,35 +2,57 @@ package org.example.client.core;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.io.*;
 import java.net.*;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.example.exception.CommandIOException;
+import org.example.exception.InvalidArgsException;
 import org.example.managers.*;
 import org.example.command.*;
+import org.example.models.StudyGroup;
+import org.example.utils.IOProvider;
+import org.example.parser.*;
+import org.example.utils.LocalDateTimeSerializer;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Console implements Serializable {
     private Scanner scanner;
-    private boolean active;
+    private static boolean active;
     private CommandManager commandmanager;
     private LinkedList<String> commandsStack;
     private int stacksize;
-    private UDPSender sender;
-    private UDPReader reader;
+    private static UDPSender sender;
+    private static UDPReader reader;
+    private IOProvider provider;
 
-    public Console(CommandManager commandmanager, UDPSender sender, UDPReader reader)
+    public Console(CommandManager commandmanager, UDPSender sender, UDPReader reader, IOProvider provider)
     {
         this.scanner = new Scanner(System.in);
         this.active = true;
         this.commandmanager = commandmanager;
+        this.provider=provider;
         this.commandsStack = new LinkedList<String>();
         this.stacksize = 0;
         this.sender = sender;
         this.reader = reader;
+    }
+
+    public IOProvider getProvider() {
+        return provider;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public Scanner getScanner() {
+        return scanner;
     }
 
     public void start(UDPConnector connector) {
@@ -44,9 +66,9 @@ public class Console implements Serializable {
         reader =  new UDPReader(connector.getDatagramSocket());
         int[] parametersptr = {-1};
         CommandShallow shallow = new CommandShallow();
-        String[] parameters = new String[0];
+        //String[] parameters = new String[0];
         while (this.active) {
-            readCommand();
+            readCommand(provider);
         }
     }
 
@@ -65,20 +87,32 @@ public class Console implements Serializable {
         System.out.println(line);
     }
 
-    public void readCommand() {
+    public void readCommand(IOProvider provider) {
         System.out.print("Введите команду ( или help): ");
         String[] com;
         stacksize = 0;
-        com = scanner.nextLine().split(" ");
+        com = scanner.nextLine().split("\\s");
+        String cname="";
+        String arg ="";
         if (com.length > 0) {
             if (com[0] != null && com[0].equals("")) {
                 System.out.println("команда не должна быть пустой");
                 return;
             }
+            else{
+                cname=com[0];
+                String[] args =new String[com.length-1];
+                System.arraycopy(com,1,args,0,com.length-1);
+                arg=String.join(" ",args);
+            }
             Command command	= null;
             try {
-                command = commandmanager.getCommand(com[0]);
-                if (command != null && command.getName().equals("save")) {
+                command = commandmanager.getCommand(cname);
+                if(command == null){
+                    System.out.println("Нет такой команды");
+                    return;
+                }
+                if (command.getName().equals("save")) {
                     System.out.println("Клиент не может сохранять данные");
                     return;
                 }
@@ -89,214 +123,138 @@ public class Console implements Serializable {
             }
 
             try {
-                CommandShallow shallow = new CommandShallow(command,com);
-                System.out.println("command= "+command.getName());
-                if (command.getName().equals("add {element}") || command.getName().equals("update id {element}")) {
-                    String[] advices = command.getParameterAdvices();
-                    String[] parameters = new String[advices.length];
-                    for (int i = 0; i < advices.length; ++i) {
-                        this.print(advices[i]);
-                        boolean ok = false;
-                        while (!ok) {
-                            parameters[i] = scanner.nextLine();
-                            ok = true;
-                            if (parameters[i].split(" ").length > 1 && i != 0) {
-                                System.out.println("Требуется ввести только одно значение!");
-                                ok = false;
-                            }
-                            if (i != 0) {
-                                parameters[i] = parameters[i].split(" ")[0];
-                            }
-                            if ((i == 0 || i == 1 || i == 2 || i == 3 || i == 7) && (parameters[i].equals(""))) {
-                                System.out.println("Переменная не может иметь значение null!");
-                                ok = false;
-                            }
-                            if (ok) {
-                                try {
-                                    switch(i) {
-                                        case 1: {
-                                            int x = Integer.parseInt(parameters[i]);
-                                            if (x <= -32) {
-                                                ok = false;
-                                                System.out.println("X должен быть больше -522");
-                                            }
-                                        }
-                                        break;
-                                        case 2:
-                                            int y = Integer.parseInt(parameters[i]);
-                                            if (y <= -32) {
-                                                ok = false;
-                                                System.out.println("Y должен быть больше -345");
-                                            }
-                                        case 3: {
-                                            int x = Integer.parseInt(parameters[i]);
-                                            if (x <= 0) {
-                                                ok = false;
-                                                System.out.println("Количество студентов должно быть больше 0");
-                                            }
-                                        }
-                                        break;
-                                        case 4: {
-                                            int x = Integer.parseInt(parameters[i]);
-                                            if (x <= 0) {
-                                                ok = false;
-                                                System.out.println("Количество исключенных студентов должно быть больше 0");
-                                            }
-                                        }
-                                        break;
-                                        case 5: {
-                                            int x = Integer.parseInt(parameters[i]);
-                                            if (x <= 0) {
-                                                ok = false;
-                                                System.out.println("Количество тех, кто должен быть исключен должно быть больше 0");
-                                            }
 
-                                        }
-                                        break;
-                                        case 6:
-                                            if (!parameters[i].equals("") && !parameters[i].equals("DISTANCE_EDUCATION") && !parameters[i].equals("FULL_TIME_EDUCATION") && !parameters[i].equals("EVENING_CLASSES")) {
-                                                ok = false;
-                                                System.out.println("Введено неверное значение");
-                                            }
-                                            break;
-                                        case 7:
-                                            if(parameters[i].equals(null)){
-                                                ok = false;
-                                                System.out.println("Имя не может быть пустое");
-                                            }
-                                            break;
-                                        case 8:
-                                            int x = Integer.parseInt(parameters[i]);
-                                            if (x <= 0) {
-                                                ok = false;
-                                                System.out.println("id паспорта не может быть 0");
+                CommandShallow shallow = new CommandShallow((String)command.getName(),arg);
+                // Звесь встаить функцию проверки aргумерта
+                if (!argCheck(cname,arg)){return;}
+                System.out.println("command= "+command.getName()+" "+arg);
 
-                                            }
-                                            break;
-                                        case 9:
-                                            if (!parameters[i].equals("") && !parameters[i].equals("GREEN") && !parameters[i].equals("YELLOW") && !parameters[i].equals("ORANGE") && !parameters[i].equals("WHITE")&& !parameters[i].equals("BLACK")&& !parameters[i].equals("BLUE")) {
-                                                ok = false;
-                                                System.out.println("Введено неверное значение");
-                                            }
-                                            break;
-                                        case 10:{
-                                            int X = Integer.parseInt(parameters[i]);
-                                            if (X <= -32) {
-                                                ok = false;
-                                                System.out.println("X должен быть больше -52");
-                                            }
-                                        }
-                                        break;
-                                        case 11: {
-                                            int Y = Integer.parseInt(parameters[i]);
-                                            if (Y <= -32) {
-                                                ok = false;
-                                                System.out.println("X должен быть больше -32");
-                                            }
-                                        }
-                                        break;
-                                        case 12: {
-                                            if(parameters[i].equals("")) {
-
-                                                ok = false;
-                                                System.out.println("Имя не может ьыть пусто");
-                                            }
-                                        }
-                                        break;
-                                    }
-                                }
-                                catch (Exception e) {
-                                    System.out.println("Введено неверное значение");
-                                    ok = false;
-                                }
-
-
-                            }
-                        }
-                    }
-                    try {
-                        shallow.setStudyGroup(parameters);
-                    }
-                    catch (Exception e) {
-                        System.out.println(e.getMessage());
-                    }
-
+                if (((String) command.getName()).contains("execute_script")){
+                    command.execute(arg);
+                    return;
                 }
+                execute_command(shallow,provider,commandmanager);
 
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                try {
-                    ObjectOutputStream oos = new ObjectOutputStream(baos);
-                    oos.writeObject((Object) shallow);
-                    System.out.println("before send 2 :" + shallow.getCommand().getName());
-                }
-                catch (Exception e){
-                    System.out.println("Error oos"+e.getMessage());
-                }
-                byte[] arr = baos.toByteArray();
-                System.out.println("before send ");
-                sender.send(arr);
-                Response response = null;
-                System.out.println("before readResp1");
-                try {
-                    response = reader.readResponse();
-                }
-
-                catch (IOException e){
-                    System.out.println("server is not avaliable: "+ e.getMessage());
-                }
-
-                catch (ClassNotFoundException e){
-                    System.out.println("smth went wrong...: "+ e.getMessage());
-                }
-                String s= new String(response.getMessage(), Charset.defaultCharset());
-                if (response.getRnumber()>1){
-                    ArrayList<Response> responses = new ArrayList<Response>();
-                    responses.set(0, response);
-                    int rcount=1;
-                    for(int i=1;i<response.getRnumber();i++){
-                        try {
-                            responses.set(i,reader.readResponse());
-                            rcount++;
-                        } catch (SocketTimeoutException | ClassNotFoundException e){
-                            System.out.println("ReadSocket Timeout");
-                        }
-
-                    }
-                    if(rcount==response.getRnumber()){
-                        //всё норм
-                        int message_length=0;
-                        for (int i=0;i<response.getRnumber();i++){
-                            message_length += responses.get(i).getMessage().length;
-                        }
-                        ByteBuffer mbb = ByteBuffer.allocate(message_length);
-
-                        for (int i=0;i<response.getRnumber();i++){
-                            mbb.put(responses.get(i).getMessage());
-                        };
-                        mbb.rewind();
-                        s= new String(mbb.array(),Charset.defaultCharset());
-                    }
-
-                }
-
-
-                    if (s.equals("exit")) {
-                        this.stop();
-                    }
-                    System.out.println(s);
 
             }
-            catch (IllegalArgumentException e) {
+            catch (IllegalArgumentException | IOException e) {
                 System.out.println(e.getMessage());
             }
-            catch (IOException e) {
-                System.out.println(e.getMessage());
+            catch (InvalidArgsException e) {
+                throw new RuntimeException(e);
             }
         }
     }
 
-    public void stop() {
+    public static void stop() {
         active = false;
     }
 
+    public static void execute_command(CommandShallow shallow,IOProvider provider,CommandManager commandManager) throws IOException {
+        if (shallow.getCommand().contains("add") || shallow.getCommand().equals("update") ) {
+            try {
+                StudyGroup sg= commandManager.getCommand(shallow.getCommand()).createSG(provider);
+                shallow.setStudyGroup(sg);
+            }
+            catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+
+        }
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try {
+            ObjectOutputStream oos = new ObjectOutputStream(baos);
+            oos.writeObject((Object) shallow);
+            System.out.println("before send 2 :" + shallow.getCommand());
+        }
+        catch (Exception e){
+            System.out.println("Error oos"+e.getMessage());
+        }
+        byte[] arr = baos.toByteArray();
+        System.out.println("Передача "+arr.length+" байт.");
+        sender.send(arr);
+        Response response = null;
+        //System.out.println("before readResp1");
+        try {
+            response = reader.readResponse();
+        }
+
+        catch (IOException e){
+            System.out.println("server is not avaliable: "+ e.getMessage());
+        }
+
+        catch (ClassNotFoundException e){
+            System.out.println("smth went wrong...: "+ e.getMessage());
+        }
+
+        String s= new String(response.getMessage(), Charset.defaultCharset());
+
+        if (response.getRnumber()>1){
+            s="";
+            ArrayList<Response> responses = new ArrayList<Response>();
+            responses.add(response);
+            int rcount=1;
+            for(int i=1;i<response.getRnumber();i++){
+                try {
+                    responses.add(reader.readResponse());
+                    rcount++;
+                } catch (SocketTimeoutException | ClassNotFoundException e){
+                    System.out.println("ReadSocket Timeout");
+                }
+
+            }
+
+
+            if(rcount==response.getRnumber()){
+                //всё норм
+                responses.sort(new Comparator<Response>() {
+                    @Override
+                    public int compare(Response o1, Response o2) {
+                        return o1.getRcount() - o2.getRcount();
+                    }
+                });
+
+                int message_length=0;
+                for (int i=0;i<response.getRnumber();i++){
+                    message_length += responses.get(i).getMessage().length;
+                }
+                ByteBuffer mbb = ByteBuffer.allocate(message_length);
+
+                for (int i=0;i<response.getRnumber();i++){
+                    mbb.put(responses.get(i).getMessage());
+                };
+                mbb.rewind();
+                s= new String(mbb.array(),Charset.defaultCharset());
+            }
+            else {
+                System.out.println("Ошибка приёма-передачи , повторите ");
+            }
+
+        }
+
+
+        if (s.equals("exit")) {
+            Console.stop();
+        }
+        System.out.println(s);
+
+
+    }
+    boolean argCheck(String name, String arg){
+        if((name.equals("execute_script")||name.equals("count_less_than_group_admin")) && !arg.isEmpty()){
+            //если имеется ввиду Person.name
+            return true;
+        }
+        else if (name.equals("update")||name.equals("remove_by_id")) {
+            try {
+                Long.parseLong(arg);
+            } catch (Exception e) {
+                System.out.println("Значение аргумента не long");
+                return false;
+            }
+            return true;
+        }
+        return true;
+    }
 }

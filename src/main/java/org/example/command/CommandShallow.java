@@ -1,18 +1,22 @@
 package org.example.command;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.example.models.StudyGroup;
 import org.example.models.Color;
 import org.example.models.Location;
 import org.example.models.Person;
 import org.example.models.Coordinates;
 import org.example.models.FormOfEducation;
-
+import org.example.utils.LocalDateTimeSerializer;
+import java.time.LocalDateTime;
 import java.io.Serializable;
+import java.util.SplittableRandom;
 
 public class CommandShallow implements Serializable {
-    private Command command;
-    private String[] args;
-    private StudyGroup studyGroup;
+    private String command;
+    private String args;
+    private String studyGroup;
 
     public CommandShallow() {
         this.command = null;
@@ -20,24 +24,30 @@ public class CommandShallow implements Serializable {
         this.studyGroup = null;
     }
 
-    public CommandShallow(Command command, String[] args) {
+    public CommandShallow(String command, String args) {
         this.command = command;
         this.args = args;
         this.studyGroup = null;
     }
 
 
-    public Command getCommand() {
+    public String getCommand() {
         return command;
     }
 
-    public String[] getArguments() {
+    public String getArguments() {
         return args;
     }
 
-
-    public void setStudyGroup(String[] splitted) {
- /*       Color col = null;
+    public void setStudyGroup(StudyGroup sg){
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeSerializer());
+        Gson gson = builder.create();
+        String json = gson.toJson(sg);
+        this.studyGroup=json;
+    }
+  /*  public void setStudyGroup(String[] splitted) {
+       Color col = null;
         switch(splitted[4]) {
             case "RED":
                 col = Color.RED;
@@ -82,7 +92,7 @@ public class CommandShallow implements Serializable {
         if (!groupAdmin.validate()) {
             throw new IllegalArgumentException("Error! Invalid group admin");
         }
-*/
+
         this.studyGroup = new StudyGroup(
                 splitted[0],  //имя группы
                 new Coordinates(
@@ -100,8 +110,8 @@ public class CommandShallow implements Serializable {
                                         splitted[12])));//Имя локаци
 
     }
-
-    public StudyGroup getStudyGroup() {
+*/
+    public String getStudyGroup() {
         return studyGroup;
     }
 }

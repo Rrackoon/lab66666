@@ -1,49 +1,47 @@
 package org.example.command;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.example.exception.InvalidArgsException;
 import org.example.managers.CollectionManager;
 import org.example.managers.CommandManager;
 import org.example.models.StudyGroup;
 import org.example.parser.SGParser;
 import org.example.utils.IOProvider;
+import org.example.utils.LocalDateTimeDeserializer;
 
 import java.nio.ByteBuffer;
+import java.time.LocalDateTime;
 
 public class UpdateCommand extends Command {
 
     public UpdateCommand() {
-        super("update id {element}", "обновить значение элемента коллекции, id которого равен заданному", 2, new String[]{
-                "имя группы ",
-                "Координата Х ",
-                " Координата Y ",
-                " Количество студентов ",
-                "Кол-во исключенных студентов ",
-                " Кол-во тех, кто должен быть исключен ",
-                "Форма обучения ( доступные варианты - DISTANCE_EDUCATION, FULL_TIME_EDUCATION, EVENING_CLASSES) ",
-                "Имя админа группы ",
-                "id паспорта",
-                "Цвет волос ( из доступных - RED,BLACK,BLUE, YELLOW, BROWN) ",
-                "Локация админа, координата Х ",
-                "Локация админа, координата Y",
-                "Имя локаци"});
+        super("update", "обновить значение элемента коллекции, id которого равен заданному", 2);
     }
     @Override
-    public  Response[] execute(String[] args, Integer stacksize, StudyGroup studyGroup, CommandManager commandmanager, CollectionManager collection)  {
-        ByteBuffer respBuff = ByteBuffer.wrap("".getBytes());
-        String[] response = collection.getCollection().stream().map(dr -> dr.toString()).toArray(String[]::new);
-
-        Response[] respArr= Response.createResponses(response);
-
+    public  Response[] execute(String args,  String studyGroup1, CommandManager commandmanager, CollectionManager collection)  {
+        GsonBuilder builder = new GsonBuilder();//создаем экземпляр
+        builder.setPrettyPrinting();
+        builder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeDeserializer());//для корректной десериализации
+        Gson gson = builder.create();
+        StudyGroup studyGroup = gson.fromJson(studyGroup1, StudyGroup.class);
+        long id=Long.parseLong(args);
+        studyGroup.setId();
+        collection.update(id,studyGroup);
+        String[] response = new String[2];
+        response[0]="Изменена группа: "+studyGroup.getName();
+        response[1]="c ID:: "+Long.parseLong(args);
+        Response[] respArr = Response.createResponses(response);
         return  respArr;
     }
 
 
 
     @Override
-    public void execute(String[] args) throws InvalidArgsException {
+    public void execute(String args) throws InvalidArgsException {
         validateArgs(args, 1);
 
-        long studyGroupId = Long.parseLong(args[0]);
+        long studyGroupId = Long.parseLong(args);
         StudyGroup studyGroup = collection.get(studyGroupId);
         if (studyGroup == null) {
             provider.getPrinter().print("StudyGroup with specified ID doesn't exist.");
@@ -57,6 +55,5 @@ public class UpdateCommand extends Command {
         collection.update(studyGroupId, newStudyGroup);
         provider.getPrinter().printf("StudyGroup (ID %s) updated successfully.\n", studyGroupId);
     }
-
 
 }
