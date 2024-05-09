@@ -42,10 +42,9 @@ public class UDPReader {
         in_buffer = ByteBuffer.allocateDirect(1024);
         this.channel=channel;
         this.selector=selector;
-        //this.scanner = new Scanner(System.in);
 
     }
-
+    //получение последней полученной команды
     public CommandShallow getShallow() {
         return shallow;
     }
@@ -53,7 +52,7 @@ public class UDPReader {
     public SocketAddress getClient()
     {return this.client;}
     public void execute() throws IOException {
-        //selector = Selector.open();
+        // Регистрация канала на чтение в селекторе
         channel.register(selector, SelectionKey.OP_READ);
         if (true) {
 
@@ -80,29 +79,23 @@ public class UDPReader {
     }
 
     public SocketAddress  receive() {
-        //SocketAddress client;
         try {
-            //channel = (DatagramChannel) key.channel();
             in_buffer = ByteBuffer.allocate(65507);
             client = channel.receive(in_buffer);
-            //client = channel.getRemoteAddress();
-
-            //int numRead = -1;
-            //numRead = channel.read(in_buffer);
-            byte[] data = new byte[in_buffer.position()];
+            byte[] data = new byte[in_buffer.position()];  // Копирование данных из буфера в массив байтов
             System.arraycopy(in_buffer.array(), 0, data, 0, in_buffer.position());
+            // Создание потока для чтения объектов из массива байтов
             ByteArrayInputStream bis = new ByteArrayInputStream(data);
             ObjectInput in = new ObjectInputStream(bis);
+            // Десериализация команды
             shallow = (CommandShallow)in.readObject();
             System.out.println("Получена команда:"+ shallow.getCommand());
             logger.info("Command received: "+shallow.getCommand());
-            //logger.info("Command received: {} {}", shallow.getCommand().getName());
             in_buffer.clear();
 
 
         } catch (Exception e){
             logger.error("Error receiving UDP data: {}"+ e.getMessage());
-            //logger.error("Error receiving UDP data: {}", e.getMessage(), e);
         }
         return client;
 

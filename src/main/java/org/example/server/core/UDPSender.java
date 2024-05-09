@@ -37,10 +37,8 @@ public class UDPSender {
         for (int i = 0; i < response.length; i++) {
             try {
                 System.out.println("Передача "+(i+1)+ " части ответа");
+                logger.debug("response: {} chunk :", response[i].getRcount() );
 
-                //for (int j = 0; j < response[i].getMessage().length; j++) {
-                    logger.debug("response: {} chunk :", response[i].getRcount() );
-                //}
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();//для записи объекта в массив байтов
                 ObjectOutputStream oos = new ObjectOutputStream(baos);
                 oos.writeObject(response[i]);

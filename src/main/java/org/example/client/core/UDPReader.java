@@ -34,8 +34,6 @@ public class UDPReader {
             ObjectInputStream ois = new ObjectInputStream(bais);
             System.out.println("Читаем ответ");
             try{
-             //   Object o = ois.readObject();
-             //   o.getClass().getName();
             resp= (Response) ois.readObject();
             System.out.println("Почучена "+(resp.getRcount()+1)+" из "+resp.getRnumber()+" частeй");
 

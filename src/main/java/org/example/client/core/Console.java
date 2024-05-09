@@ -55,18 +55,17 @@ public class Console implements Serializable {
         return scanner;
     }
 
+    //установка соединения с сервером, создание сендера и ридера и запуск цикла взаимодействий с сервером.
     public void start(UDPConnector connector) {
         boolean con = false;
         String host = "";
         int port = 0;
         Pattern pattern = Pattern.compile("^((25[0-5]|(2[0-4]|1\\d|[1-9]|)\\d)\\.?\\b){4}$");
-        //connector.Connect(host,port);
         connector.Connect("localhost",9999);
         sender = new UDPSender(connector.getDatagramSocket(), connector.getServerAddress(),connector.getServerPort());
         reader =  new UDPReader(connector.getDatagramSocket());
         int[] parametersptr = {-1};
         CommandShallow shallow = new CommandShallow();
-        //String[] parameters = new String[0];
         while (this.active) {
             readCommand(provider);
         }
@@ -86,7 +85,7 @@ public class Console implements Serializable {
         }
         System.out.println(line);
     }
-
+    //считывает обрабатывает отправляет и получает команды и выводит их в консоль
     public void readCommand(IOProvider provider) {
         System.out.print("Введите команду ( или help): ");
         String[] com;
@@ -119,7 +118,9 @@ public class Console implements Serializable {
 
             }
             catch (CommandIOException e) {
-                System.out.println(e.getMessage());
+                System.out.println("Введеная несуществующая команда");
+                return;
+
             }
 
             try {
@@ -145,7 +146,7 @@ public class Console implements Serializable {
             }
         }
     }
-
+    //остановка работы консоли
     public static void stop() {
         active = false;
     }
@@ -175,7 +176,6 @@ public class Console implements Serializable {
         System.out.println("Передача "+arr.length+" байт.");
         sender.send(arr);
         Response response = null;
-        //System.out.println("before readResp1");
         try {
             response = reader.readResponse();
         }
@@ -207,7 +207,6 @@ public class Console implements Serializable {
 
 
             if(rcount==response.getRnumber()){
-                //всё норм
                 responses.sort(new Comparator<Response>() {
                     @Override
                     public int compare(Response o1, Response o2) {

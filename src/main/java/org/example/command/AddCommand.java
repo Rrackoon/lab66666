@@ -25,7 +25,6 @@ public class AddCommand extends Command {
     @Override
     public Response[] execute(String args,  String studyGroup1, CommandManager commandmanager, CollectionManager collection) {
         GsonBuilder builder = new GsonBuilder();//создаем экземпляр
-        //builder.setPrettyPrinting();
         builder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeDeserializer());//для корректной десериализации
         Gson gson = builder.create();
         StudyGroup studyGroup = gson.fromJson(studyGroup1, StudyGroup.class);

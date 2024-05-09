@@ -12,14 +12,7 @@ public class Response implements Serializable {
     private int rcount;
     private int rnumber;
 
-    /*public Response() {
-        this.message = null;
-        this.rcount=0;
-        this.rnumber=0;
-    }
-*/
     public Response(byte[] message, int rcount, int rnumber) {
-  //      String all_message = "";
         this.message = message;
         this.rcount = rcount;
         this.rnumber = rnumber;
